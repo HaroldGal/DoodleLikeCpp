@@ -5,7 +5,7 @@ class Fond : public Shape
 {
 public:
 	Fond():Shape(){}
-	Fond(int x, int y, SDL_Rect* pos,string im):Shape(x, y, pos, im){}
+	Fond(int x, int y, SDL_Rect* pos,const string im):Shape(x, y, pos, im){}
 
 	void init()
 	{
@@ -15,7 +15,7 @@ public:
 	void maj()
 	{
 		SDL_Surface* decor;
-		decor = SDL_LoadBMP("Img/sky.bmp");
+		decor = SDL_LoadBMP(image.c_str());
 		SDL_BlitSurface(decor, NULL, rectangle, position_init);
 		SDL_Flip(rectangle);
 	}
