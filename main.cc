@@ -7,16 +7,16 @@ void pause(Fond ecran)
 {
 
 	SDL_Rect pos1;
-	pos1.x = 100;
-	pos1.y = 100;
-	Personnage p1(50,50, &pos1, "Img/perso2.bmp",ecran);
+	pos1.x = 300;
+	pos1.y = 300;
+	Personnage p1(50,50, &pos1, "Img/perso2.bmp",ecran); // initialisation du personnage
 
 	SDL_Event event;
 	SDL_EnableKeyRepeat(10, 5); //1. delai de depart, 2. delai entre 2 activ avec touche enfonce
 	int continuer = 1;
 	while (continuer)
 	{
-    	SDL_WaitEvent(&event);
+    	SDL_PollEvent(&event);
     	switch(event.type)
     	{
         case SDL_QUIT:
@@ -29,17 +29,22 @@ void pause(Fond ecran)
                     continuer = 0;
                     break;
 	            case SDLK_RIGHT: // Flèche droite
-	                p1.deplacement(3);
+	                p1.deplacement(3); // on se déplace de 3 à droite
 	                break;
 	            case SDLK_LEFT: // Flèche gauche
-	                p1.deplacement(-3);
+	                p1.deplacement(-3); // on se déplace de 3 à gauche
 	                break;
             }
             break;
-        
+
+     	default:
+     		p1.deplacement(0);
+     		break;   
     }
-    ecran.maj();
+    ecran.maj(); 
     p1.coller();
+    SDL_Flip(ecran.get());
+    SDL_Delay(10);
 }
 }
 int main()
