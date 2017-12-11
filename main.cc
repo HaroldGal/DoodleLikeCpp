@@ -12,7 +12,7 @@ void pause(Fond ecran)
 	pos1.y = 300;
 	pos2.x = 100;
 	pos2.y = 300;
-	Personnage p1(50,50, &pos1, "Img/plateforme1.bmp",ecran); // initialisation du personnage
+	Personnage p1(50,50, &pos1, "Img/perso2.bmp",ecran); // initialisation du personnage
 	Plateforme p2(200,98, &pos2, "Img/perso2.bmp",ecran);
 	SDL_Event event;
 	SDL_EnableKeyRepeat(10, 5); //1. delai de depart, 2. delai entre 2 activ avec touche enfonce
