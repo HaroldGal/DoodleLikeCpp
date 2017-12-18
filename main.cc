@@ -3,17 +3,14 @@
 #include "Personnage.hh"
 #include "Element.hh"
 #include "Plateforme.hh"
+#include <list>
+#include <time.h>
+#include "Jeu.hh"
 
-void pause(Fond ecran)
+void pause(/*Fond ecran*/)
 {
+	Jeu partie;
 
-	SDL_Rect pos1, pos2;
-	pos1.x = 300;
-	pos1.y = 300;
-	pos2.x = 100;
-	pos2.y = 300;
-	Personnage p1(50,50, &pos1, "Img/perso2.bmp",ecran); // initialisation du personnage
-	Plateforme p2(200,98, &pos2, "Img/perso2.bmp",ecran);
 	SDL_Event event;
 	SDL_EnableKeyRepeat(10, 5); //1. delai de depart, 2. delai entre 2 activ avec touche enfonce
 	int continuer = 1;
@@ -32,38 +29,31 @@ void pause(Fond ecran)
                     continuer = 0;
                     break;
 	            case SDLK_RIGHT: // Flèche droite
-	                p1.deplacement(3); // on se déplace de 3 à droite
+	            	partie.get_perso()->deplacement(3); // on se deplace de 3 à droite
 	                break;
 	            case SDLK_LEFT: // Flèche gauche
-	                p1.deplacement(-3); // on se déplace de 3 à gauche
+	            	partie.get_perso()->deplacement(-3);
 	                break;
 	            default:
-     				p1.deplacement(0);
+     				//p1.deplacement(0);
+	            	partie.get_perso()->deplacement(0);
      				break;
      		break;  
             }
             break;
 
      	default:
-     		p1.deplacement(0);
+     		partie.get_perso()->deplacement(0);
      		break;   
     }
-    ecran.maj(); 
-    p2.coller();
-    p1.coller();
-    SDL_Flip(ecran.get());
+    partie.maj();
     SDL_Delay(10);
+
 }
 }
+
 int main()
 {
-	SDL_Rect pos;
-	pos.x=0;
-	pos.y=0;
-	Fond ecran(640,480,&pos, "Img/sky.bmp");
-	ecran.init();
-	ecran.maj();
-	pause(ecran);
-	SDL_Quit();
+	pause();
 	return 0;
 }
