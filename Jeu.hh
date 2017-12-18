@@ -36,7 +36,7 @@ public:
     p->y = 250;
     liste_plateforme.push_back(Plateforme(200,50, p, "Img/plateforme.bmp",ecran));
     int nb_p = rand()%6 + 3;
-    for(int i=0; i< nb_p; i++){
+    for(int i=1; i< nb_p; i++){
       p = new(SDL_Rect);
       p->x = rand()%640;
       p->y = rand()%480;

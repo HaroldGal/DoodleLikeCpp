@@ -7,7 +7,7 @@
 #include <time.h>
 #include "Jeu.hh"
 
-void pause(/*Fond ecran*/)
+void lancer_jeu(/*Fond ecran*/)
 {
 	Jeu partie;
 
@@ -54,6 +54,6 @@ void pause(/*Fond ecran*/)
 
 int main()
 {
-	pause();
+	lancer_jeu();
 	return 0;
 }

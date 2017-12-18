@@ -19,6 +19,5 @@ public:
 	void maj()
 	{
 		SDL_BlitSurface(decor, NULL, rectangle, position_init);
-		SDL_Flip(rectangle);
 	}
 };
