@@ -89,6 +89,7 @@ public:
         perso->rebond();
         hauteur_relative_personnage = perso->get_pos()->y; // on a touché une plateforme on change la position du perso
       }
+      if(it->get_pos()->y >0 && it->get_pos()->x >0)
         it->coller();
      }
 
@@ -103,9 +104,39 @@ public:
     // suppression des plateforme inutiles
    delete_elem();
 
+   // on ajoute tjrs une plate forme en rab au dessus
+   if(hauteur_max_plateforme()>0) ajouter_plateforme(hauteur_max_plateforme()-100);
     perso->coller();
     SDL_Flip(ecran->get());
   }
+
+int hauteur_max_plateforme(){
+  int z = 480;
+  for(list<Plateforme>::iterator it=liste_plateforme.begin(); it!=liste_plateforme.end(); it++)
+     {
+      if(it->get_pos()->y<z) z = it->get_pos()->y;
+     }
+     return z;
+}
+
+// ajouter une plate forme à la hauteur y
+void ajouter_plateforme(int hauteur)
+{ 
+  //srand(time(NULL));
+  SDL_Rect* p = new(SDL_Rect);
+  p->x = rand()%640;
+  p->y = hauteur;
+  liste_plateforme.push_back(Plateforme(200,50, p, "Img/plateforme.bmp",ecran));
+
+
+}
+
+void decaller_monstre()
+{
+  for(list<Plateforme>::iterator it=liste_plateforme.begin(); it!=liste_plateforme.end(); it++)   it->deplacement(2);
+
+  hauteur_relative_personnage += 2;
+}
 
 void decaller_plateforme()
 {
