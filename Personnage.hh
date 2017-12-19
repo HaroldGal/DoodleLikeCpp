@@ -3,12 +3,12 @@
 
 class Personnage: public Element {
 protected:
-	int poids;
-	int impulsion;
-	int vitesse;
+	float poids;
+	float impulsion;
+	float vitesse;
 public:
 	Personnage():Element(){}
-	Personnage(int x, int y, SDL_Rect* pos, const string im, Fond* _dec):Element(x,y,pos,im,_dec), poids(1), impulsion(20), vitesse(20){
+	Personnage(int x, int y, SDL_Rect* pos, const string im, Fond* _dec):Element(x,y,pos,im,_dec), poids(0.1), impulsion(5), vitesse(5){
 		rectangle = SDL_LoadBMP(image.c_str());
 	}
 	void deplacement(int i){ 

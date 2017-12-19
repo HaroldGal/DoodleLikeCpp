@@ -47,7 +47,7 @@ void lancer_jeu(/*Fond ecran*/)
      		break;   
     }
     partie.maj();
-    SDL_Delay(10);
+    SDL_Delay(2);
 
 }
 }
