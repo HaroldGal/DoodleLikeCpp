@@ -13,6 +13,8 @@ protected:
   list<Plateforme> liste_plateforme;
   Personnage* perso;
   Fond* ecran;
+  int hauteur_relative_personnage;
+
 public:
   Jeu(){
     srand(time(NULL));
@@ -30,19 +32,38 @@ public:
     p->x = 300;
     p->y = 300;
     perso = new Personnage(50,50, p, "Img/perso2.bmp",ecran);
+    hauteur_relative_personnage = 480;
 
     //init des plate forme de depart
     p = new(SDL_Rect);
     p->x = 200;
-    p->y = 250;
+    p->y = 350;
     liste_plateforme.push_back(Plateforme(200,50, p, "Img/plateforme.bmp",ecran));
-    int nb_p = rand()%6 + 3;
+
+    int nb_p = rand()%2 + 3; // plateformes basses
     for(int i=1; i< nb_p; i++){
       p = new(SDL_Rect);
       p->x = rand()%640;
-      p->y = rand()%480;
+      p->y = 300 + rand()%180;
       liste_plateforme.push_back(Plateforme(200,50, p, "Img/plateforme.bmp",ecran));
-  }
+    }
+
+    nb_p = rand()%2 + 3; // plateformes moyennes
+    for(int i=1; i< nb_p; i++){
+      p = new(SDL_Rect);
+      p->x = rand()%640;
+      p->y = 200 + rand()%100;
+      liste_plateforme.push_back(Plateforme(200,50, p, "Img/plateforme.bmp",ecran));
+    }
+
+    nb_p = rand()%2 + 3; // plateformes hautes
+    for(int i=1; i< nb_p; i++){
+      p = new(SDL_Rect);
+      p->x = rand()%640;
+      p->y = 50 + rand()%200;
+      liste_plateforme.push_back(Plateforme(200,50, p, "Img/plateforme.bmp",ecran));
+    }
+
      int nb_m;
 
      for (int i=1; i<10; i++){
@@ -56,8 +77,7 @@ public:
       }
 
      } 
-    }
-  
+ }
 
   Personnage* get_perso(){return perso;}
   
@@ -65,7 +85,10 @@ public:
     ecran->maj(); 
     for(list<Plateforme>::iterator it=liste_plateforme.begin(); it!=liste_plateforme.end(); it++)
      {
-      if(it->touche(perso) == 1)  perso->rebond();
+      if(it->touche(perso) == 1){
+        perso->rebond();
+        hauteur_relative_personnage = perso->get_pos()->y; // on a touché une plateforme on change la position du perso
+      }
         it->coller();
      }
 
@@ -74,8 +97,36 @@ public:
      	it->coller();
      }
 
+   // on decale tout par rapport a notre perso (scrollling)
+   if(hauteur_relative_personnage < 350)  decaller_plateforme();
+  
+    // suppression des plateforme inutiles
+   delete_elem();
+
     perso->coller();
     SDL_Flip(ecran->get());
   }
-  
+
+void decaller_plateforme()
+{
+  for(list<Plateforme>::iterator it=liste_plateforme.begin(); it!=liste_plateforme.end(); it++)   it->deplacement(2);
+
+  hauteur_relative_personnage += 2;
+}
+
+void delete_elem(){
+  list<Plateforme>::iterator it, itdel;
+  it = liste_plateforme.begin();
+  while(it!=liste_plateforme.end()){
+    if( it->get_pos()->y > 480){
+      itdel=it;
+      it++;
+      liste_plateforme.erase(itdel);
+    }
+    else{
+      it++;
+    }
+  }
+}
+
 };
