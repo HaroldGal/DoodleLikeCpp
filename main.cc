@@ -3,6 +3,7 @@
 #include "Personnage.hh"
 #include "Element.hh"
 #include "Plateforme.hh"
+#include "Monstre.hh"
 #include <list>
 #include <time.h>
 #include "Jeu.hh"

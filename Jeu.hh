@@ -9,6 +9,7 @@ using namespace std;
 
 class Jeu{
 protected:
+  list<Monstre> liste_monstre;
   list<Plateforme> liste_plateforme;
   Personnage* perso;
   Fond* ecran;
@@ -41,8 +42,22 @@ public:
       p->x = rand()%640;
       p->y = rand()%480;
       liste_plateforme.push_back(Plateforme(200,50, p, "Img/plateforme.bmp",ecran));
-    }
   }
+     int nb_m;
+
+     for (int i=1; i<10; i++){
+      nb_m = rand()%3;
+      if(nb_m==0)
+      {
+      	p=new(SDL_Rect);
+      	p->x = rand()%640;
+      	p->y = i*48;
+      	liste_monstre.push_back(Monstre(200,50, p, "Img/mechant.bmp",ecran));
+      }
+
+     } 
+    }
+  
 
   Personnage* get_perso(){return perso;}
   
@@ -53,6 +68,12 @@ public:
       if(it->touche(perso) == 1)  perso->rebond();
         it->coller();
      }
+
+     for(list<Monstre>::iterator it=liste_monstre.begin(); it!=liste_monstre.end(); it++)
+     {
+     	it->coller();
+     }
+
     perso->coller();
     SDL_Flip(ecran->get());
   }
