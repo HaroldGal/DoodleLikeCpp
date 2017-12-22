@@ -11,10 +11,13 @@ public:
 	Personnage(int x, int y, SDL_Rect* pos, const string im, Fond* _dec):Element(x,y,pos,im,_dec), poids(0.1), impulsion(5), vitesse(5){
 		rectangle = SDL_LoadBMP(image.c_str());
 	}
-	void deplacement(int i){ 
+	void deplacement(int i, int j){ 
 		position_init->x = (decor->get_taille_x() + position_init->x+i)%decor->get_taille_x();
+		if(j==0){
 		position_init->y = (position_init->y - vitesse);
 		vitesse -= poids;
+	}
+		else position_init->y +=j; // cas du simple decalage
 		}
 	void coller()
 	{

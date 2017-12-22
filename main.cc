@@ -4,8 +4,7 @@
 #include "Element.hh"
 #include "Plateforme.hh"
 #include "Monstre.hh"
-#include <list>
-#include <time.h>
+#include "Score.hh"
 #include "Jeu.hh"
 
 void lancer_jeu(/*Fond ecran*/)
@@ -30,27 +29,27 @@ void lancer_jeu(/*Fond ecran*/)
                     continuer = 0;
                     break;
 	            case SDLK_RIGHT: // Flèche droite
-	            	partie.get_perso()->deplacement(3); // on se deplace de 3 à droite
+	            	partie.get_perso()->deplacement(3,0); // on se deplace de 3 à droite
 	                break;
 	            case SDLK_LEFT: // Flèche gauche
-	            	partie.get_perso()->deplacement(-3);
+	            	partie.get_perso()->deplacement(-3,0);
 	                break;
 	            default:
-     				//p1.deplacement(0);
-	            	partie.get_perso()->deplacement(0);
+	            	partie.get_perso()->deplacement(0,0);
      				break;
      		break;  
             }
             break;
 
      	default:
-     		partie.get_perso()->deplacement(0);
+     		partie.get_perso()->deplacement(0,0);
      		break;   
     }
     partie.maj();
     SDL_Delay(2);
 
 }
+    partie.quitter_jeu();
 }
 
 int main()

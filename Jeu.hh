@@ -14,9 +14,12 @@ protected:
   Personnage* perso;
   Fond* ecran;
   int hauteur_relative_personnage;
+  int score;
+  Score* display_score;
 
 public:
   Jeu(){
+    score = 0;
     srand(time(NULL));
     SDL_Rect* p;
 
@@ -26,6 +29,12 @@ public:
     p->y = 0;
     ecran = new Fond(640,480,p, "Img/sky.bmp");
     ecran->init();
+
+    // init du score
+    p = new(SDL_Rect);
+    p->x = 400;
+    p->y = 20;
+    display_score = new Score(100,50, p, "angelina.TTF", ecran);
 
     //init du perso
     p = new(SDL_Rect);
@@ -63,7 +72,7 @@ public:
       p->y = 50 + rand()%200;
       liste_plateforme.push_back(Plateforme(200,50, p, "Img/plateforme.bmp",ecran));
     }
-
+    /*
      int nb_m;
 
      for (int i=1; i<10; i++){
@@ -76,7 +85,8 @@ public:
       	liste_monstre.push_back(Monstre(200,50, p, "Img/mechant.bmp",ecran));
       }
 
-     } 
+     }
+     */ 
  }
 
   Personnage* get_perso(){return perso;}
@@ -87,10 +97,11 @@ public:
      {
       if(it->touche(perso) == 1){
         perso->rebond();
+        score += hauteur_relative_personnage - perso->get_pos()->y;
         hauteur_relative_personnage = perso->get_pos()->y; // on a touché une plateforme on change la position du perso
       }
-      if(it->get_pos()->y >0 && it->get_pos()->x >0)
-        it->coller();
+      it->deplacement(2,0);
+      if(it->get_pos()->y >0 && it->get_pos()->x >0) it->coller();
      }
 
      for(list<Monstre>::iterator it=liste_monstre.begin(); it!=liste_monstre.end(); it++)
@@ -99,10 +110,12 @@ public:
      }
 
    // on decale tout par rapport a notre perso (scrollling)
-   if(hauteur_relative_personnage < 350)  decaller_plateforme();
+   if(hauteur_relative_personnage < 350)  decaler_elements();
   
     // suppression des plateforme inutiles
    delete_elem();
+   display_score->donner_score(score);
+   display_score->coller();
 
    // on ajoute tjrs une plate forme en rab au dessus
    if(hauteur_max_plateforme()>0) ajouter_plateforme(hauteur_max_plateforme()-100);
@@ -131,16 +144,11 @@ void ajouter_plateforme(int hauteur)
 
 }
 
-void decaller_monstre()
+void decaler_elements()
 {
-  for(list<Plateforme>::iterator it=liste_plateforme.begin(); it!=liste_plateforme.end(); it++)   it->deplacement(2);
-
-  hauteur_relative_personnage += 2;
-}
-
-void decaller_plateforme()
-{
-  for(list<Plateforme>::iterator it=liste_plateforme.begin(); it!=liste_plateforme.end(); it++)   it->deplacement(2);
+  for(list<Plateforme>::iterator it=liste_plateforme.begin(); it!=liste_plateforme.end(); it++)   it->deplacement(0,2);
+  for(list<Monstre>::iterator it=liste_monstre.begin(); it!=liste_monstre.end(); it++)   it->deplacement(0,3);
+  perso->deplacement(0,2);
 
   hauteur_relative_personnage += 2;
 }
@@ -158,6 +166,12 @@ void delete_elem(){
       it++;
     }
   }
+}
+
+void quitter_jeu()
+{
+  TTF_Quit();
+  SDL_Quit();
 }
 
 };

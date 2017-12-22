@@ -2,14 +2,27 @@
 #pragma once 
 
 class Plateforme: public Element {
+	bool mouvante;
+	int sens; // 0 gauche 1 droite
 public:
 	Plateforme():Element(){}
-	Plateforme(int x, int y, SDL_Rect* pos, const string im, Fond* _dec):Element(x,y,pos,im,_dec){
+	Plateforme(int x, int y, SDL_Rect* pos, const string im, Fond* _dec, int proba_mouvante = 0):Element(x,y,pos,im,_dec){
 		rectangle = SDL_LoadBMP(image.c_str());
+		if(rand()%10<proba_mouvante){ 
+			mouvante =true; 
+			sens = rand()%2;
+		}
+		else mouvante=false;
 	}
-	void deplacement(int i){
-		position_init->y += i;
+	void deplacement(int i, int j){
+		position_init->y += j;
+		if(mouvante){
+			if(sens == 1) position_init->x += i;
+			else position_init->x -= i;
+		}
+		//if((position_init->x+taille_x) == Fond->get_taille_x()) sens = (sens+1)%2;
 	}
+
 	void coller()
 	{
 		SDL_SetColorKey(rectangle, SDL_SRCCOLORKEY, SDL_MapRGB(rectangle->format, 0, 0, 255));

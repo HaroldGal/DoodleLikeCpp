@@ -1,2 +1,2 @@
 #! /bin/bash
-g++ -o exe main.cc -lSDL
+g++ -o exe main.cc -lSDL -lSDL_ttf -std=c++11
