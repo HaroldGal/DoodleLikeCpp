@@ -7,7 +7,7 @@
 #include "Score.hh"
 #include "Jeu.hh"
 
-void lancer_jeu(/*Fond ecran*/)
+int lancer_jeu(/*Fond ecran*/)
 {
 	Jeu partie;
 
@@ -34,6 +34,9 @@ void lancer_jeu(/*Fond ecran*/)
 	            case SDLK_LEFT: // Flèche gauche
 	            	partie.get_perso()->deplacement(-3,0);
 	                break;
+                case SDLK_w: // Flèche gauche
+                    partie.get_perso()->deplacement(0,-5);
+                    break;
 	            default:
 	            	partie.get_perso()->deplacement(0,0);
      				break;
@@ -45,15 +48,17 @@ void lancer_jeu(/*Fond ecran*/)
      		partie.get_perso()->deplacement(0,0);
      		break;   
     }
-    partie.maj();
+    if(partie.maj()==0) return partie.game_over();
     SDL_Delay(2);
 
 }
     partie.quitter_jeu();
+    return 0;
 }
 
 int main()
 {
-	lancer_jeu();
+    int i = 1;
+    while(i)    i = lancer_jeu(); 
 	return 0;
 }

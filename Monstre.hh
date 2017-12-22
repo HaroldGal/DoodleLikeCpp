@@ -4,6 +4,7 @@
 class Monstre : public Element{
 public:
 	 Monstre():Element(){}
+	 ~Monstre(){};
 	 Monstre(int x, int y, SDL_Rect* pos, const string im, Fond* _dec):Element(x,y,pos,im,_dec){
 		rectangle = SDL_LoadBMP(image.c_str());
 	}

@@ -14,13 +14,15 @@ public:
 		}
 		else mouvante=false;
 	}
+	~Plateforme(){};
 	void deplacement(int i, int j){
 		position_init->y += j;
 		if(mouvante){
 			if(sens == 1) position_init->x += i;
 			else position_init->x -= i;
-		}
-		//if((position_init->x+taille_x) == Fond->get_taille_x()) sens = (sens+1)%2;
+		if((position_init->x+taille_x) > decor->get_taille_x()) sens = 0;
+		else if((position_init->x) < 20) sens = 1;
+	}
 	}
 
 	void coller()

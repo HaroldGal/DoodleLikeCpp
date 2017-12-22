@@ -1,5 +1,6 @@
 #include "Element.hh"
 #pragma once 
+#include <SDL/SDL_ttf.h>
 
 class Score : public Element{
 protected:
@@ -8,7 +9,13 @@ protected:
 	 SDL_Color couleur;
 public:
 	 Score():Element(){}
+	 ~Score(){
+	 	TTF_CloseFont(police);
+    	TTF_Quit();
+	 }
+
 	 Score(int x, int y, SDL_Rect* pos, const string im, Fond* _dec):Element(x,y,pos,im,_dec){
+	 	TTF_Init();
 		police = TTF_OpenFont(image.c_str(), 30);
 		TTF_SetFontStyle(police, TTF_STYLE_BOLD);
 		score_actuel ="";

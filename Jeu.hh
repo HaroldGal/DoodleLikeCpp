@@ -91,24 +91,27 @@ public:
 
   Personnage* get_perso(){return perso;}
   
-  void maj(){
+  int maj(){
     ecran->maj(); 
     for(list<Plateforme>::iterator it=liste_plateforme.begin(); it!=liste_plateforme.end(); it++)
      {
-      if(it->touche(perso) == 1){
+      if(it->touche(perso) == 1 && perso->chute()==1){
         perso->rebond();
         score += hauteur_relative_personnage - perso->get_pos()->y;
         hauteur_relative_personnage = perso->get_pos()->y; // on a touché une plateforme on change la position du perso
       }
+
       it->deplacement(2,0);
       if(it->get_pos()->y >0 && it->get_pos()->x >0) it->coller();
      }
 
+    score = (hauteur_relative_personnage - perso->get_pos()->y > score)? score + hauteur_relative_personnage - perso->get_pos()->y : score;
+/*
      for(list<Monstre>::iterator it=liste_monstre.begin(); it!=liste_monstre.end(); it++)
      {
      	it->coller();
      }
-
+*/
    // on decale tout par rapport a notre perso (scrollling)
    if(hauteur_relative_personnage < 350)  decaler_elements();
   
@@ -118,9 +121,11 @@ public:
    display_score->coller();
 
    // on ajoute tjrs une plate forme en rab au dessus
-   if(hauteur_max_plateforme()>0) ajouter_plateforme(hauteur_max_plateforme()-100);
+   if(hauteur_max_plateforme()>0) ajouter_plateforme(hauteur_max_plateforme()-100, (score<20000)? score/1000 : 20);
     perso->coller();
     SDL_Flip(ecran->get());
+  if(perso->get_pos()->y > ecran->get_taille_y()) return 0;
+    return 1;
   }
 
 int hauteur_max_plateforme(){
@@ -133,13 +138,21 @@ int hauteur_max_plateforme(){
 }
 
 // ajouter une plate forme à la hauteur y
-void ajouter_plateforme(int hauteur)
+void ajouter_plateforme(int hauteur, int difficulte=0)
 { 
-  //srand(time(NULL));
   SDL_Rect* p = new(SDL_Rect);
-  p->x = rand()%640;
+  p->x = rand()%(640-100);
   p->y = hauteur;
-  liste_plateforme.push_back(Plateforme(200,50, p, "Img/plateforme.bmp",ecran));
+  int type = rand()%20;
+  if(type > difficulte)
+  liste_plateforme.push_back(Plateforme(200,50, p, "Img/plateforme.bmp",ecran,(difficulte<10)?difficulte:10));
+  else  if(type>difficulte - 5)
+    liste_plateforme.push_back(Plateforme(100,50, p, "Img/moyenneplateforme.bmp",ecran,(difficulte<10)?difficulte:10));
+  else{
+    if(rand()%2 == 0)
+      liste_plateforme.push_back(Plateforme(100,50, p, "Img/miniplateforme.bmp",ecran,(difficulte<10)?difficulte:10));
+    else liste_plateforme.push_back(Plateforme(50,50, p, "Img/moyenneplateforme.bmp",ecran,(difficulte<10)?difficulte:10));
+}
 
 
 }
@@ -168,9 +181,49 @@ void delete_elem(){
   }
 }
 
+int game_over()
+{
+  SDL_Surface* over;
+  over = SDL_LoadBMP("Img/gameover.bmp");
+  SDL_SetAlpha(over, SDL_SRCALPHA, 150);
+  SDL_Rect pos;
+  pos.x = 0;
+  pos.y = 0;
+  SDL_BlitSurface(over, NULL, ecran->get(), &pos);
+  SDL_Flip(ecran->get());
+  SDL_Event event;
+  int continuer = 1;
+  while (continuer)
+  {
+      SDL_WaitEvent(&event);
+      switch(event.type)
+      {
+        case SDL_QUIT:
+            continuer = 0;
+            break;
+        case SDL_KEYDOWN:
+            switch (event.key.keysym.sym)
+            {
+              case SDLK_q: 
+                    continuer = 0;
+                    break;
+              case SDLK_r: 
+                    return 1;
+                    break;
+              default:
+              break;
+            }
+          break;  
+
+      default:
+        break;   
+    }
+  }
+  return 0;
+}
+
 void quitter_jeu()
 {
-  TTF_Quit();
   SDL_Quit();
 }
 
