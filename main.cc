@@ -6,6 +6,7 @@
 #include "Monstre.hh"
 #include "Score.hh"
 #include "Jeu.hh"
+#include "Bonus.hh"
 
 int lancer_jeu(/*Fond ecran*/)
 {
