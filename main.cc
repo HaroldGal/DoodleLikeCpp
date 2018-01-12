@@ -3,15 +3,14 @@
 #include "Personnage.hh"
 #include "Element.hh"
 #include "Plateforme.hh"
-#include "Monstre.hh"
+//#include "Monstre.hh"
 #include "Score.hh"
 #include "Jeu.hh"
-#include "Bonus.hh"
+//#include "Bonus.hh"
 
 int lancer_jeu(/*Fond ecran*/)
 {
 	Jeu partie;
-
 	SDL_Event event;
 	SDL_EnableKeyRepeat(10, 5); //1. delai de depart, 2. delai entre 2 activ avec touche enfonce
 	int continuer = 1;
@@ -36,7 +35,7 @@ int lancer_jeu(/*Fond ecran*/)
 	            	partie.get_perso()->deplacement(-3,0);
 	                break;
                 case SDLK_w: // Flèche gauche
-                    partie.get_perso()->deplacement(0,-5);
+                    partie.cheatscore(1000);
                     break;
 	            default:
 	            	partie.get_perso()->deplacement(0,0);

@@ -16,7 +16,7 @@ protected:
 public:
 
   SDL_Surface* get(){return rectangle;}
-  SDL_Rect* get_pos(){ return position_init;}
+  SDL_Rect* operator()(){return position_init;}
   int get_taille_x(){return taille_x;}
   int get_taille_y(){return taille_y;}
   //~Shape(){ SDL_FreeSurface(rectangle);  delete position_init;}

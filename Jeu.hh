@@ -9,7 +9,7 @@ using namespace std;
 
 class Jeu{
 protected:
-  list<Monstre> liste_monstre;
+  //list<Monstre> liste_monstre;
   list<Plateforme> liste_plateforme;
   Personnage* perso;
   Fond* ecran;
@@ -72,40 +72,31 @@ public:
       p->y = 50 + rand()%200;
       liste_plateforme.push_back(Plateforme(200,50, p, "Img/plateforme.bmp",ecran));
     }
-    /*
-     int nb_m;
-
-     for (int i=1; i<10; i++){
-      nb_m = rand()%3;
-      if(nb_m==0)
-      {
-      	p=new(SDL_Rect);
-      	p->x = rand()%640;
-      	p->y = i*48;
-      	liste_monstre.push_back(Monstre(200,50, p, "Img/mechant.bmp",ecran));
-      }
-
-     }
-     */ 
  }
 
+ ~Jeu(){
+    delete ecran;
+    delete display_score;
+    delete perso;
+ }
   Personnage* get_perso(){return perso;}
   
   int maj(){
+    delete_elem();
     ecran->maj(); 
     for(list<Plateforme>::iterator it=liste_plateforme.begin(); it!=liste_plateforme.end(); it++)
      {
       if(it->touche(perso) == 1 && perso->chute()==1){
         perso->rebond();
-        score += hauteur_relative_personnage - perso->get_pos()->y;
-        hauteur_relative_personnage = perso->get_pos()->y; // on a touché une plateforme on change la position du perso
+        score += hauteur_relative_personnage - (*perso)()->y;
+        hauteur_relative_personnage = (*perso)()->y; // on a touché une plateforme on change la position du perso
       }
 
       it->deplacement(2,0);
-      if(it->get_pos()->y >0 && it->get_pos()->x >0) it->coller();
+      if((*it)()->y >0 && (*it)()->x >0) (*it)>>ecran;
      }
 
-    score = (hauteur_relative_personnage - perso->get_pos()->y > score)? score + hauteur_relative_personnage - perso->get_pos()->y : score;
+    score = (hauteur_relative_personnage - (*perso)()->y > score)? score + hauteur_relative_personnage - (*perso)()->y : score;
 /*
      for(list<Monstre>::iterator it=liste_monstre.begin(); it!=liste_monstre.end(); it++)
      {
@@ -116,15 +107,14 @@ public:
    if(hauteur_relative_personnage < 350)  decaler_elements();
   
     // suppression des plateforme inutiles
-   delete_elem();
    display_score->donner_score(score);
-   display_score->coller();
+   (*display_score)>>ecran;
 
    // on ajoute tjrs une plate forme en rab au dessus
    if(hauteur_max_plateforme()>0) ajouter_plateforme(hauteur_max_plateforme()-100, (score<20000)? score/1000 : 20);
-    perso->coller();
+    (*perso)>>ecran;
     SDL_Flip(ecran->get());
-  if(perso->get_pos()->y > ecran->get_taille_y()) return 0;
+  if((*perso)()->y > ecran->get_taille_y()) return 0;
     return 1;
   }
 
@@ -132,7 +122,7 @@ int hauteur_max_plateforme(){
   int z = 480;
   for(list<Plateforme>::iterator it=liste_plateforme.begin(); it!=liste_plateforme.end(); it++)
      {
-      if(it->get_pos()->y<z) z = it->get_pos()->y;
+      if((*it)()->y<z) z = (*it)()->y;
      }
      return z;
 }
@@ -160,7 +150,7 @@ void ajouter_plateforme(int hauteur, int difficulte=0)
 void decaler_elements()
 {
   for(list<Plateforme>::iterator it=liste_plateforme.begin(); it!=liste_plateforme.end(); it++)   it->deplacement(0,2);
-  for(list<Monstre>::iterator it=liste_monstre.begin(); it!=liste_monstre.end(); it++)   it->deplacement(0,3);
+  //for(list<Monstre>::iterator it=liste_monstre.begin(); it!=liste_monstre.end(); it++)   it->deplacement(0,3);
   perso->deplacement(0,2);
 
   hauteur_relative_personnage += 2;
@@ -170,7 +160,7 @@ void delete_elem(){
   list<Plateforme>::iterator it, itdel;
   it = liste_plateforme.begin();
   while(it!=liste_plateforme.end()){
-    if( it->get_pos()->y > 480){
+    if( (*it)()->y > 480){
       itdel=it;
       it++;
       liste_plateforme.erase(itdel);
@@ -179,8 +169,13 @@ void delete_elem(){
       it++;
     }
   }
+  
 }
 
+void cheatscore(int i)
+{
+  score = score + i ;
+}
 int game_over()
 {
   SDL_Surface* over;
@@ -208,6 +203,7 @@ int game_over()
                     continuer = 0;
                     break;
               case SDLK_r: 
+                    delete over;
                     return 1;
                     break;
               default:
@@ -219,6 +215,7 @@ int game_over()
         break;   
     }
   }
+  delete over;
   return 0;
 }
 

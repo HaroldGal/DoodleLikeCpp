@@ -25,7 +25,7 @@ public:
 	}
 }
 	int touche(Personnage* perso){
-		SDL_Rect* perso_pos = perso->get_pos();
+		SDL_Rect* perso_pos = (*perso)();
 		if( perso_pos->y+55 > position_init->y &&  perso_pos->y+45 < position_init->y ){ // hit box
 			if( perso_pos->x < position_init->x + taille_x +5 &&  perso_pos->x > position_init->x -45 )
 				return 1;

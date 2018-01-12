@@ -14,7 +14,7 @@ public:
     	TTF_Quit();
 	 }
 
-	 Score(int x, int y, SDL_Rect* pos, const string im, Fond* _dec):Element(x,y,pos,im,_dec){
+	 Score(int x, int y, SDL_Rect* pos, const string im, Fond* _dec):Element(x,y,pos,im){
 	 	TTF_Init();
 		police = TTF_OpenFont(image.c_str(), 30);
 		TTF_SetFontStyle(police, TTF_STYLE_BOLD);
@@ -24,9 +24,10 @@ public:
 	}
 	
 	void deplacement(int i, int j){}
-	void coller()
+
+	void operator>>(Fond* decor)
 	{
-	    rectangle = TTF_RenderText_Blended(police, score_actuel.c_str(), couleur);
+		rectangle = TTF_RenderText_Blended(police, score_actuel.c_str(), couleur);
 		SDL_BlitSurface(rectangle, NULL, decor->get(), position_init);
 	}
 

@@ -1,0 +1,2 @@
+main.o: main.cc Shape.hh Fond.hh Personnage.hh Element.hh Plateforme.hh \
+ Score.hh Jeu.hh
