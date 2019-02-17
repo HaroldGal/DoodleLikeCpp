@@ -10,6 +10,7 @@
 
 int lancer_jeu(/*Fond ecran*/)
 {
+
 	Jeu partie;
 	SDL_Event event;
 	SDL_EnableKeyRepeat(10, 5); //1. delai de depart, 2. delai entre 2 activ avec touche enfonce

@@ -27,34 +27,34 @@ public:
     p = new(SDL_Rect);
     p->x = 0;
     p->y = 0;
-    ecran = new Fond(640,480,p, "Img/sky.bmp");
+    ecran = new Fond(640,480,p, "../Img/sky.bmp");
     ecran->init();
 
     // init du score
     p = new(SDL_Rect);
     p->x = 400;
     p->y = 20;
-    display_score = new Score(100,50, p, "angelina.TTF", ecran);
+    display_score = new Score(100,50, p, "../data/angelina.TTF", ecran);
 
     //init du perso
     p = new(SDL_Rect);
     p->x = 300;
     p->y = 300;
-    perso = new Personnage(50,50, p, "Img/perso2.bmp",ecran);
+    perso = new Personnage(50,50, p, "../Img/perso2.bmp",ecran);
     hauteur_relative_personnage = 480;
 
     //init des plate forme de depart
     p = new(SDL_Rect);
     p->x = 200;
     p->y = 350;
-    liste_plateforme.push_back(Plateforme(200,50, p, "Img/plateforme2.bmp",ecran));
+    liste_plateforme.push_back(Plateforme(200,50, p, "../Img/plateforme2.bmp",ecran));
 
     int nb_p = rand()%2 + 3; // plateformes basses
     for(int i=1; i< nb_p; i++){
       p = new(SDL_Rect);
       p->x = rand()%640;
       p->y = 300 + rand()%180;
-      liste_plateforme.push_back(Plateforme(200,50, p, "Img/plateforme2.bmp",ecran));
+      liste_plateforme.push_back(Plateforme(200,50, p, "../Img/plateforme2.bmp",ecran));
     }
 
     nb_p = rand()%2 + 3; // plateformes moyennes
@@ -62,7 +62,7 @@ public:
       p = new(SDL_Rect);
       p->x = rand()%640;
       p->y = 200 + rand()%100;
-      liste_plateforme.push_back(Plateforme(200,50, p, "Img/plateforme2.bmp",ecran));
+      liste_plateforme.push_back(Plateforme(200,50, p, "../Img/plateforme2.bmp",ecran));
     }
 
     nb_p = rand()%2 + 3; // plateformes hautes
@@ -70,7 +70,7 @@ public:
       p = new(SDL_Rect);
       p->x = rand()%640;
       p->y = 50 + rand()%200;
-      liste_plateforme.push_back(Plateforme(200,50, p, "Img/plateforme2.bmp",ecran));
+      liste_plateforme.push_back(Plateforme(200,50, p, "../Img/plateforme2.bmp",ecran));
     }
  }
 
@@ -135,13 +135,13 @@ void ajouter_plateforme(int hauteur, int difficulte=0)
   p->y = hauteur;
   int type = rand()%20;
   if(type > difficulte)
-  liste_plateforme.push_back(Plateforme(200,50, p, "Img/plateforme2.bmp",ecran,(difficulte<10)?difficulte:10));
+  liste_plateforme.push_back(Plateforme(200,50, p, "../Img/plateforme2.bmp",ecran,(difficulte<10)?difficulte:10));
   else  if(type>difficulte - 5)
-    liste_plateforme.push_back(Plateforme(100,50, p, "Img/moyenneplateforme2.bmp",ecran,(difficulte<10)?difficulte:10));
+    liste_plateforme.push_back(Plateforme(100,50, p, "../Img/moyenneplateforme2.bmp",ecran,(difficulte<10)?difficulte:10));
   else{
     if(rand()%2 == 0)
-      liste_plateforme.push_back(Plateforme(50,50, p, "Img/miniplateforme2.bmp",ecran,(difficulte<10)?difficulte:10));
-    else liste_plateforme.push_back(Plateforme(100,50, p, "Img/moyenneplateforme2.bmp",ecran,(difficulte<10)?difficulte:10));
+      liste_plateforme.push_back(Plateforme(50,50, p, "../Img/miniplateforme2.bmp",ecran,(difficulte<10)?difficulte:10));
+    else liste_plateforme.push_back(Plateforme(100,50, p, "../Img/moyenneplateforme2.bmp",ecran,(difficulte<10)?difficulte:10));
 }
 
 
@@ -179,7 +179,7 @@ void cheatscore(int i)
 int game_over()
 {
   SDL_Surface* over;
-  over = SDL_LoadBMP("Img/gameover.bmp");
+  over = SDL_LoadBMP("../Img/gameover.bmp");
   SDL_SetAlpha(over, SDL_SRCALPHA, 150);
   SDL_Rect pos;
   pos.x = 0;

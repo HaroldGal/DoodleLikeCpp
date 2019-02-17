@@ -18,7 +18,7 @@ public:
 		SDL_SetColorKey(rectangle, SDL_SRCCOLORKEY, SDL_MapRGB(rectangle->format, 0, 0, 255));
 		SDL_BlitSurface(rectangle, NULL, decor->get(), position_init);
 		if(pris){
-			motif = SDL_LoadBMP("Img/bonus1.bmp");
+			motif = SDL_LoadBMP("../Img/bonus1.bmp");
 			SDL_SetColorKey(motif, SDL_SRCCOLORKEY, SDL_MapRGB(motif->format, 0, 0, 255));
 			SDL_BlitSurface(motif, NULL, decor->get(), position_init);
 
